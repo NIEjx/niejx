@@ -1,0 +1,98 @@
+body {
+    background-color: #5de100;
+}
+
+a:link { 
+    color:white;
+text-decoration: none;
+}
+a:active {
+    color: white;
+    text-decoration: none;
+}
+a:visited {
+    color: white;
+    text-decoration: none;
+}
+
+div.site-content {
+    margin-top: -0.5em;
+    background-color: #5de100;
+    position: absolute;
+    left: 13em;
+    right: 0.5em;
+    padding-left: 0em;
+    font-family: Georgia, "Times New Roman",
+          Times, serif;
+    color: white;
+    height:100%;
+    }
+div.site-content h1,div.site-content h2,div.site-content h3,div.site-content h4,div.site-content h5 {
+    margin-top: 0em;
+    padding-top: 0.1em;
+    padding-bottom: 0.1em;
+    background-color: #3d9200;
+    color: white
+}
+div.menu-container {
+      margin-top: -0.5em;
+      background-color: #3d9200;
+    position: absolute;
+    left: 0em;
+      padding-right: 0em;
+      height:100%;
+    z-index: 9999;
+      color: white;
+    width: 13em }
+div.menu-container a:link { 
+color: white; 
+text-decoration:underline; 
+} 
+div.menu-container a:visited { 
+color: white; 
+text-decoration:line-through; 
+} 
+div.menu {
+    padding-left: 0.25em;
+    font-size: 2em;
+    width: 10em;
+    height: 1.3em;
+}
+
+div.menu:hover a{
+    color: #94002d;
+    font-weight: bold
+    
+}
+div.menu:hover {
+    padding-left: 0.75em;
+    background-color: #3d9200;
+}
+div.content {
+    padding-left: 0.5em;
+}
+/*
+a:link { 
+color:#DA1050; 
+text-decoration:none; 
+} 
+a:visited { 
+color:black; 
+text-decoration:none; 
+} 
+a:hover { 
+color: #Fa2f70; 
+text-decoration:none; 
+} 
+a:active { 
+color:#FFFFFF; 
+text-decoration:none; 
+} 
+*/
+
+/*
+div.site-content a:link { 
+color:#e10076; 
+text-decoration:underline; 
+} 
+*/

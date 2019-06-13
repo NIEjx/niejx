@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="NIE" property="og:title"/>
+<meta content="NIE 个人主页" property="og:description"/>
+<meta content="个人主页" name="keywords"/>
+<meta content="智龙迷城，pad,puzzleanddragon，pnd，游戏攻略，分享游戏的系统介绍和攻略" name="description"/>
+<!--link href="./img/ico.png" rel="icon" sizes="16x16" type="image/x-icon"/--><link href="./gbf.css" id="allcss" media="all" rel="stylesheet" type="text/css"/>
+<title>Welcome to NIE.JX</title>
+</head>
+<body onload="pageload()">
+    <div class="menu-container" id="menu"><p style="padding-left: 0.5em">Welcome to <a href="./index.html">Nie's Blog</a></p><br/><br/>
+        <div id="catagory"><p>asset type/ 图片类别</p><select id="mains" onchange="maincata()" style="width: 80%;padding-left: 1em">
+            <option value="quest">quest/ 任务半身图</option>
+            <option value="class">class/ 主角职业</option><option value="chara">character/ 角色</option><option value="summon">summon/ 召唤石</option><option value="bg">bg/ 首页背景</option><option value="book">Chara Handbook / 角色图鉴</option>
+            </select>
+            <p>language version/ 图片版本</p>
+        <select id="ver" style="width: 80%;padding-left: 1em">
+            <option value="jp">Japanese/ 日文版</option>
+            <option value="en">English/ 英文版</option>
+            </select>
+            <p>rarelity/ 稀有度</p><select id="rarelity" onChange="rarechange()" style="width: 80%;padding-left: 1em"><option>Rare/ R 角色</option><option>SuperRare/ SR 角色</option><option>SSRare/ SSR 角色</option><option>Lyria/ 女角色</option><option>Quest/ 剧情角色</option></select>
+        </div>
+        <div id="sub"></div><div id="search"><button onclick="getimg()">Get_Image</button><p>Search / 搜索</p><input id="nmsearch" type="text" name="txtsearch" maxlength="10"/><button onclick="srcimg()">Search_Image</button><br/><br/><a href="https://github.com/NIEjx/GBF-Image">Python自动下载脚本</a><br/><br/><a href="./gbfcomment.html"> 点击进入留言板</a></div></div>
+<div class="site-content">
+    <div class="box">
+        <h1>碧蓝幻想立绘 / Granblue Fantasy illustration</h1>
+        <div class="content" id="content">在左边选择图片后点击 get image可看到对应图片。<br/>不知道角色所属类别的话可以在搜索框输入名字点击Search image 查找（英文名首字母须大写）。</div>
+    </div>
+    <div id="copyright" style="padding-left: 0.25em;"><span><br/><br/>All images' copyright © Cygames. Inc. and Granblue Fantasy. <br/>Data collected from gbf.wiki and gbf-wiki.com<br/>Copyright © 1988-2020 Nie.jx. All rights reserved.</span></div></div>
+    <script type="text/javascript">
+    function pageload(){
+        var mains = document.getElementById("mains");
+        mains.selectedIndex = 2;
+        var sub = document.getElementById("sub");
+        while(sub.hasChildNodes()){
+            sub.removeChild(sub.firstChild);
+        }
+        var pname = document.createElement("p");
+        var sname = document.createElement("select");
+        sname.id = "name";
+        sname.style = "width: 80%;padding-left: 1em;";
+        
+        var ptype = document.createElement("p");
+        ptype.textContent = "Type/ 图片类型";
+        pname.textContent = "Name/ 角色名称";
+        var stype = document.createElement("select");
+        stype.id = "type";
+        stype.style = "width: 80%;padding-left: 1em;";
+        var opb = document.createElement("option");
+        opb.textContent = "Book/ 图鉴图";
+        var opz = document.createElement("option");
+        opz.textContent = "Zoom/ 放大图";
+        var opc = document.createElement("option");
+        opc.textContent = "Cover/ 首页图";
+        stype.appendChild(opb);
+        stype.appendChild(opz);
+        stype.appendChild(opc);
+
+        pname.textContent = "Name/ 角色名称";
+
+        var srare = document.getElementById("rarelity");
+        while(srare.hasChildNodes()){
+            srare.removeChild(srare.firstChild);
+        }
+        var opr = document.createElement("option");
+        opr.textContent = "Rare/R 角色";
+        var opsr = document.createElement("option");
+        opsr.textContent = "Super Rare/SR 角色";
+        var opssr = document.createElement("option");
+        opssr.textContent = "SS Rare/SSR 角色";
+        var ops = document.createElement("option");
+        ops.textContent = "Skin/ 皮肤";
+        var opex = document.createElement("option");
+        opex.textContent = "quest/ 剧情角色";
+        srare.appendChild(opr);
+        srare.appendChild(opsr);
+        srare.appendChild(opssr);
+        srare.appendChild(ops);
+        srare.appendChild(opex);
+
+        //read txt and add   
+        sub.appendChild(ptype);
+        sub.appendChild(stype);
+        addname();
+        function addname(){
+            for(var i in chara[0]){
+                var opi = document.createElement("option");
+                opi.textContent = chara[0][i][0];
+                sname.appendChild(opi);
+            }
+        }
+        
+        sub.appendChild(pname);
+        sub.appendChild(sname);
+        //console.log(index);   
+    }
+    function maincata(){
+        var index = document.getElementById("mains").selectedIndex;
+        if(index == 0){
+            self.location = "./gbfimage.html";
+        }else if(index == 1){
+            self.location = "./gbfclass.html";
+        }else if(index == 3){
+            self.location = "./gbfsummon.html";
+        }else if(index == 4){
+            self.location = "./gbfbg.html";
+        }else if(index == 5){
+            self.location = "./gbfbook.html";
+        }
+    }    
+    function rarechange(){
+        //console.log("change");
+        var srare = document.getElementById("rarelity");
+        if(srare==null){
+            return ;
+        }
+        var index = srare.selectedIndex;
+        
+        var sname = document.getElementById("name");
+        while(sname.hasChildNodes()){
+            sname.removeChild(sname.firstChild);
+        }
+        
+        addname();
+        function addname(){
+            for(var i in chara[index]){
+                var opi = document.createElement("option");
+                opi.textContent = chara[index][i][0];
+                sname.appendChild(opi);
+            }
+        }
+    }
+    function srcimg(){
+        // 是否在角色类
+        var atype = document.getElementById("mains").selectedIndex;
+        if(atype !=2){
+            alert("搜索仅支持角色图，请在Chara类别下搜索/ Only support character searching. ");
+            return ;
+        }
+        var content = document.getElementById("content");
+        var eres = document.createElement("p");
+        var tres = "";
+        while(content.hasChildNodes()){
+            content.removeChild(content.firstChild);
+        }
+        
+        var name = document.getElementById("nmsearch").value;
+        console.log(name);
+        var flag = 0;
+        var itype = document.getElementById("type").selectedIndex;
+        var prefix1 = "assets/npc/b/";
+        if(itype==1){
+                prefix1 = "assets/npc/zoom/";
+        }
+        if(itype==2){
+                prefix1 = "assets/npc/my/";
+        }
+        
+        var list = ["_01.png","_02.png","_03.png"];
+        for (var i in chara[0]) {
+            if(chara[0][i][0].indexOf(name) != -1){
+                console.log(chara[0][i][0]);
+                if(tres!=""){
+                    tres +=",";
+                }
+                tres +="R【"+chara[0][i][0]+"】"
+                for (var i1 in list) {
+                    addimg(prefix1,chara[0][i][1],list[i1]);
+                }
+                flag = 1;
+            }
+        }
+        for (var i in chara[1]) {
+            if(chara[1][i][0].indexOf(name) != -1){
+                console.log(chara[1][i][0]);
+                if(tres!=""){
+                    tres +=",";
+                }
+                tres +="SR【"+chara[1][i][0]+"】"
+                for (var i1 in list) {
+                    addimg(prefix1,chara[1][i][1],list[i1]);
+                }
+                flag = 1;
+            }
+        }
+        for (var i in chara[2]) {
+            if(chara[2][i][0].indexOf(name) != -1){
+                console.log(chara[2][i][0]);
+                if(tres!=""){
+                    tres +=",";
+                }
+                tres +="SSR【"+chara[2][i][0]+"】"
+                for (var i1 in list) {
+                    addimg(prefix1,chara[2][i][1],list[i1]);
+                }
+                flag = 1;
+            }
+        }
+        for (var i in chara[3]) {
+            if(chara[3][i][0].indexOf(name) != -1){
+                console.log(chara[3][i][0]);
+                if(tres!=""){
+                    tres +=",";
+                }
+                tres +="【"+chara[3][i][0]+"】"
+                for (var i1 in list) {
+                    addimg(prefix1,chara[3][i][1],list[i1]);
+                }
+                flag = 1;
+            }
+        }
+        eres.textContent = tres;
+        content.appendChild(eres);
+        if(flag == 0){
+            alert("未找到该角色，请检查拼写（英文首字母需大写）/ Character not found, please check your spelling.")
+        }
+    }
+    function getimg(){
+        var content = document.getElementById("content");
+        while(content.hasChildNodes()){
+            content.removeChild(content.firstChild);
+        }
+        var itype = document.getElementById("type").selectedIndex;
+        var prefix1 = "assets/npc/b/";
+        if(itype==1){
+            prefix1 = "assets/npc/zoom/";
+        }
+        if(itype==2){
+            prefix1 = "assets/npc/my/";
+        }
+
+        var rtype = document.getElementById("rarelity").selectedIndex;
+
+        if(itype==2 && rtype ==4){
+            alert("Quest character donot have cover image. / 剧情角色没有封面图。");
+            return ;
+        }
+
+        var iname = document.getElementById("name").selectedIndex;
+        var list = [".png","_01.png","_02.png","_03.png"];
+        for (var i in list) {
+            addimg(prefix1,chara[rtype][iname][1],list[i]);
+        }
+            
+        //console.log("done");
+    }
+    function addimg(prefix1,i,subfix){
+        var econtent = document.getElementById("content");
+        var eurl = document.createElement("p");
+        var eimg = document.createElement("img");
+        var url = prefix() + prefix1 + i + subfix;
+        eimg.onload = function(){
+            //console.log("ok");
+            econtent.appendChild(eimg);
+            econtent.appendChild(eurl);
+        }
+        eimg.onerror = function(){
+//            url = "image not exist!";
+//            eurl.textContent = url;
+//            econtent.appendChild(eurl);
+        }
+        eimg.src = url;
+        eimg.style.width = "80%";
+        eurl.textContent = url;
+    }
+    function prefix(){
+        var index = document.getElementById("ver").selectedIndex;
+        if(index==0){
+            return "http://game-a.granbluefantasy.jp/assets/img/sp/";
+        }else{
+            return "http://game-a1.granbluefantasy.jp/assets_en/img/sp/";
+        }
+    }
+</script>>
+</body>
+    <script src="./data/chara171130.txt"></script>
+    <!-->http://gran-img-finder.herokuapp.com/<-->
+</html>

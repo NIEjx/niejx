@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="NIE" property="og:title"/>
+<meta content="NIE 个人主页" property="og:description"/>
+<meta content="个人主页" name="keywords"/>
+<meta content="智龙迷城，pad,puzzleanddragon，pnd，游戏攻略，分享游戏的系统介绍和攻略" name="description"/>
+<!--link href="./img/ico.png" rel="icon" sizes="16x16" type="image/x-icon"/--><link href="./gbf.css" id="allcss" media="all" rel="stylesheet" type="text/css"/>
+<title>Welcome to NIE.JX</title>
+</head>
+<body onload="pageload()">
+    <div class="menu-container" id="menu"><p style="padding-left: 0.5em">Welcome to <a href="./index.html">Nie's Blog</a></p><br/><br/>
+        <div id="catagory"><p>asset type/ 图片类别</p><select id="mains" onchange="maincata()" style="width: 80%;padding-left: 1em">
+            <option value="quest">quest/ 任务半身图</option>
+            <option value="class">class/ 主角职业</option><option value="chara">character/ 角色</option><option value="summon">summon/ 召唤石</option><option value="bg">bg/ 首页背景</option><option value="book">Chara Handbook / 角色图鉴</option>
+            </select>
+            <p>language version/ 图片版本</p>
+        <select id="ver" style="width: 80%;padding-left: 1em">
+            <option value="jp">Japanese/ 日文版</option>
+            <option value="en">English/ 英文版</option>
+            </select>
+            <p>rarelity/ 稀有度</p><select id="rarelity" onChange="rarechange()" style="width: 80%;padding-left: 1em"><option>Rare/ R 角色</option><option>SuperRare/ SR 角色</option><option>SSRare/ SSR 角色</option><option>Lyria/ 女角色</option><option>Quest/ 剧情角色</option></select>
+        </div>
+        <div id="sub"></div><div id="search"><button onclick="getimg()">Get_Image</button><br/><br/><a href="https://github.com/NIEjx/GBF-Image">Python自动下载脚本</a><br/><br/><a href="./gbfcomment.html"> 点击进入留言板</a></div></div>
+<div class="site-content">
+    <div class="box">
+        <h1>碧蓝幻想立绘 / Granblue Fantasy illustration</h1>
+        <div class="content" id="content">请在左边选择图片后点击 get image。</div>
+    </div>
+    <div id="copyright" style="padding-left: 0.25em;"><span><br/><br/>All images' copyright © Cygames. Inc. and Granblue Fantasy. <br/>Data collected from gbf.wiki and gbf-wiki.com<br/>Copyright © 1988-2020 Nie.jx. All rights reserved.</span></div></div>
+    <script type="text/javascript">
+    function pageload(){
+        var mains = document.getElementById("mains");
+        mains.selectedIndex = 3;
+        var sub = document.getElementById("sub");
+        while(sub.hasChildNodes()){
+            sub.removeChild(sub.firstChild);
+        }
+        var pname = document.createElement("p");
+        var sname = document.createElement("select");
+        sname.id = "name";
+        sname.style = "width: 80%;padding-left: 1em;";
+        
+        pname.textContent = "Name/ 召唤石名称";
+        var srare = document.getElementById("rarelity");
+        while(srare.hasChildNodes()){
+            srare.removeChild(srare.firstChild);
+        }
+        var opn = document.createElement("option");
+        opn.textContent = "Normal/N 召唤石";
+        var opr = document.createElement("option");
+        opr.textContent = "Rare/R 召唤石";
+        var opsr = document.createElement("option");
+        opsr.textContent = "Super Rare/SR 召唤石";
+        var opssr = document.createElement("option");
+        opssr.textContent = "SS Rare/SSR 召唤石";
+        srare.appendChild(opn);
+        srare.appendChild(opr);
+        srare.appendChild(opsr);
+        srare.appendChild(opssr);
+
+        //read txt and add   
+        addname();
+        function addname(){
+            for(var i in summon[0]){
+                var opi = document.createElement("option");
+                opi.textContent = summon[0][i][0];
+                sname.appendChild(opi);
+            }
+        }
+        
+        sub.appendChild(pname);
+        sub.appendChild(sname);
+        //console.log(index);   
+    }
+    function maincata(){
+        var index = document.getElementById("mains").selectedIndex;
+        if(index == 0){
+            self.location = "./gbfimage.html";
+        }else if(index == 1){
+            self.location = "./gbfclass.html";
+        }else if(index == 2){
+            self.location = "./gbfchara.html";
+        }else if(index == 4){
+            self.location = "./gbfbg.html";
+        }else if(index == 5){
+            self.location = "./gbfbook.html";
+        }
+    }
+    function rarechange(){
+        //console.log("change");
+        var srare = document.getElementById("rarelity");
+        if(srare==null){
+            return ;
+        }
+        var index = srare.selectedIndex;
+        
+        var sname = document.getElementById("name");
+        while(sname.hasChildNodes()){
+            sname.removeChild(sname.firstChild);
+        }
+        addname();
+        function addname(){
+            for(var i in summon[index]){
+                var opi = document.createElement("option");
+                opi.textContent = summon[index][i][0];
+                sname.appendChild(opi);
+            }
+        }
+    }
+    function getimg(){
+        var content = document.getElementById("content");
+        while(content.hasChildNodes()){
+            content.removeChild(content.firstChild);
+        }
+        var prefix1 = "assets/summon/b/";
+        var subfix = ".png";
+        var rtype = document.getElementById("rarelity").selectedIndex;
+        var iname = document.getElementById("name").selectedIndex;
+        addimg(prefix1,summon[rtype][iname][1],subfix);
+        //console.log("done");
+    }
+    function addimg(prefix1,i,subfix){
+        var econtent = document.getElementById("content");
+        var eurl = document.createElement("p");
+        var eimg = document.createElement("img");
+        var url = prefix() + prefix1 + i + subfix;
+        eimg.onload = function(){
+            //console.log("ok");
+            econtent.appendChild(eimg);
+            econtent.appendChild(eurl);
+        }
+        eimg.onerror = function(){
+//            url = "image not exist!";
+//            eurl.textContent = url;
+//            econtent.appendChild(eurl);
+        }
+        eimg.src = url;
+        eimg.style.width = "80%";
+        eurl.textContent = url;
+    }
+    function prefix(){
+        var index = document.getElementById("ver").selectedIndex;
+        if(index==0){
+            return "http://game-a.granbluefantasy.jp/assets/img/sp/";
+        }else{
+            return "http://game-a1.granbluefantasy.jp/assets_en/img/sp/";
+        }
+    }
+</script>>
+</body>
+    <script src="./data/summon171130.txt"></script>
+    <!-->http://gran-img-finder.herokuapp.com/<-->
+</html>

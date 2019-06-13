@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="NIE" property="og:title"/>
+<meta content="NIE 个人主页" property="og:description"/>
+<meta content="个人主页" name="keywords"/>
+<meta content="智龙迷城，pad,puzzleanddragon，pnd，游戏攻略，分享游戏的系统介绍和攻略" name="description"/>
+<!--link href="./img/ico.png" rel="icon" sizes="16x16" type="image/x-icon"/--><link href="./gbf.css" id="allcss" media="all" rel="stylesheet" type="text/css"/>
+<title>Welcome to NIE.JX</title>
+</head>
+<body onload="pageload()">
+    <div class="menu-container" id="menu"><p style="padding-left: 0.5em">Welcome to <a href="./index.html">Nie's Blog</a></p><br/><br/>
+        <div id="catagory"><p>asset type/ 图片类别</p><select id="mains" onchange="maincata()" style="width: 80%;padding-left: 1em">
+            <option value="quest">quest/ 任务半身图</option>
+            <option value="class">class/ 主角职业</option><option value="chara">character/ 角色</option><option value="summon">summon/ 召唤石</option><option value="bg">bg/ 首页背景</option><option value="book">Chara Handbook / 角色图鉴</option>
+            </select>
+            <p>language version/ 图片版本</p>
+        <select id="ver" style="width: 80%;padding-left: 1em">
+            <option value="jp">Japanese/ 日文版</option>
+            <option value="en">English/ 英文版</option>
+            </select>
+            <p>rarelity/ 稀有度</p><select id="rarelity" onChange="rarechange()" style="width: 80%;padding-left: 1em"><option>Rare/ R 角色</option><option>SuperRare/ SR 角色</option><option>SSRare/ SSR 角色</option><option>Lyria/ 女角色</option><option>Quest/ 剧情角色</option></select>
+        </div>
+        <div id="sub"></div><div id="search"><button onclick="getimg()">Get_Image</button><br/><br/><a href="https://github.com/NIEjx/GBF-Image">Python自动下载脚本</a><br/><br/><a href="./gbfcomment.html"> 点击进入留言板</a></div></div>
+<div class="site-content">
+    <div class="box">
+        <h1>碧蓝幻想立绘 / Granblue Fantasy illustration</h1>
+        <div class="content" id="content">更新log<br/>
+        2017/10/24 上线，R人物70 / SR人物220 / SSR人物135 / 剧情人物778 万圣节 / 职业 Dancer舞者<br/>
+        2017/10/30 更新 SR人物220 / SSR人物137 / 剧情人物780 万圣节 / 职业 Dancer舞者<br/>
+        2017/10/31 更新 SR人物223 / SSR人物138 / SSR召唤石249<br/>
+        2017/11/06 加入人名搜索，背景图，和人物索引模块<br/>
+        2017/11/07 加入角色图鉴模块索引<br/>
+        2017/11/08 加入人物角色的图鉴图和放大图（任务角色中没有这两个图的角色很多，get image只会显示游戏图鉴中存在的角色）。<br/>
+        2017/11/23 针对安卓浏览器进行了优化，增加了SSR角色和Racing皮肤</div>
+    </div>
+    <div id="copyright" style="padding-left: 0.25em;"><span><br/><br/>All images' copyright © Cygames. Inc. and Granblue Fantasy. <br/>Data collected from gbf.wiki and gbf-wiki.com<br/>Copyright © 1988-2020 Nie.jx. All rights reserved.</span></div></div>
+    <script type="text/javascript">
+    function pageload(){
+        var mains = document.getElementById("mains");
+        mains.selectedIndex = 0;
+        var sub = document.getElementById("sub");
+        while(sub.hasChildNodes()){
+            sub.removeChild(sub.firstChild);
+        }
+        var pname = document.createElement("p");
+        var sname = document.createElement("select");
+        sname.id = "name";
+        sname.style = "width: 80%;padding-left: 1em;";
+
+        pname.textContent = "Name/ 角色名称";
+
+        var srare = document.getElementById("rarelity");
+        while(srare.hasChildNodes()){
+            srare.removeChild(srare.firstChild);
+        }
+        var opr = document.createElement("option");
+        opr.textContent = "Rare/R 角色";
+        var opsr = document.createElement("option");
+        opsr.textContent = "Super Rare/SR 角色";
+        var opssr = document.createElement("option");
+        opssr.textContent = "SS Rare/SSR 角色";
+        var opor = document.createElement("option");
+        opor.textContent = "Lyria/ 女主角";
+        var opqu = document.createElement("option");
+        opqu.textContent = "Quest/ 剧情角色";
+        srare.appendChild(opr);
+        srare.appendChild(opsr);
+        srare.appendChild(opssr);
+        srare.appendChild(opor);
+        srare.appendChild(opqu);
+
+        //read txt and add   
+        addname();
+        function addname(){
+            for(var i in quest[0]){
+                var opi = document.createElement("option");
+                opi.textContent = quest[0][i][0];
+                sname.appendChild(opi);
+            }
+        }
+
+        sub.appendChild(pname);
+        sub.appendChild(sname);
+        //console.log(index);   
+    }
+    function maincata(){
+        var index = document.getElementById("mains").selectedIndex;
+        if(index == 1){
+            self.location = "./gbfclass.html";
+        }else if(index == 2){
+            self.location = "./gbfchara.html";
+        }else if(index == 3){
+            self.location = "./gbfsummon.html";
+        }else if(index == 4){
+            self.location = "./gbfbg.html";
+        }else if(index == 5){
+            self.location = "./gbfbook.html";
+        }
+    }
+    function rarechange(){
+        //console.log("change");
+        var srare = document.getElementById("rarelity");
+        if(srare==null){
+            return ;
+        }
+        var index = srare.selectedIndex;
+        
+        var sname = document.getElementById("name");
+        while(sname.hasChildNodes()){
+            sname.removeChild(sname.firstChild);
+        }
+        addname();
+        function addname(){
+            for(var i in quest[index]){
+                var opi = document.createElement("option");
+                opi.textContent = quest[index][i][0];
+                sname.appendChild(opi);
+            }
+        }
+    }
+    function getimg(){
+        var content = document.getElementById("content");
+        while(content.hasChildNodes()){
+            content.removeChild(content.firstChild);
+        }
+        
+        var prefix1 = "quest/scene/character/body/";
+        var rtype = document.getElementById("rarelity").selectedIndex;
+        var iname = document.getElementById("name").selectedIndex;
+        var list = [".png","_laugh.png","_laugh2.png","_sad.png","_angry.png","_serious.png","_surprise.png","_suddenly.png","_shy.png","_joy.png","_think.png","_mood.png","_laugh3.png","_eye.png","_mortifying.png","_surprise_fe.png","_weak.png","_cutin.png","_01.png","_02.png","_03.png"];
+        for (var i in list) {
+            addimg(prefix1,quest[rtype][iname][1],list[i]);
+        }
+
+        //console.log("done");
+    }
+    function addimg(prefix1,i,subfix){
+        var econtent = document.getElementById("content");
+        var eurl = document.createElement("p");
+        var eimg = document.createElement("img");
+        var url = prefix() + prefix1 + i + subfix;
+        eimg.onload = function(){
+            //console.log("ok");
+            econtent.appendChild(eimg);
+            econtent.appendChild(eurl);
+        }
+        eimg.onerror = function(){
+//            url = "image not exist!";
+//            eurl.textContent = url;
+//            econtent.appendChild(eurl);
+        }
+        eimg.src = url;
+        eimg.style.width = "80%";
+        eurl.textContent = url;
+    }
+    function prefix(){
+        var index = document.getElementById("ver").selectedIndex;
+        if(index==0){
+            return "http://game-a.granbluefantasy.jp/assets/img/sp/";
+        }else{
+            return "http://game-a1.granbluefantasy.jp/assets_en/img/sp/";
+        }
+    }
+</script>>
+</body>
+    <script src="./data/quest171120.txt"></script>
+    <!-->http://gran-img-finder.herokuapp.com/<-->
+</html>
